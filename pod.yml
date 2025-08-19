@@ -1,10 +1,23 @@
-kind: Pod
-apiVersion: v1
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: testpod4.1
+  name: myapp
+  namespace: myapp
 spec:
-  containers:
-    - name: c00
-      image: nginx:latest
-      ports:
-       - containerPort: 80
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: docker.io/rakesh007lodhi079/myapacheimage
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: regcred   # 👈 secret name created above
+
